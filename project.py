@@ -1,3 +1,6 @@
+from datetime import date
+
+
 def main():
     pass
 
@@ -64,9 +67,17 @@ def loan():
     int_rate = credit.int_rate
 
     print(f"Interest rate for your loan is {int_rate} %")
+
+
+    file = open("table.csv", "w")
+    file.write("Repayment schedule")
     payment = loan * (int_rate * 100) / time
+
+    date = date.today()
+
     while payment > 0:
         payment -= payment
+        
         print(f"Your payment for")
 
 
