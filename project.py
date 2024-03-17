@@ -1,12 +1,19 @@
 from datetime import date
 
 
+
 def main():
     pass
 
+    #new user, new account
+
+    #TODO tests!!!
+    #handleDepost()
+    #handleWithdraw(account)
 
 
-class User1():
+
+class User():
     def __init__(self, fname, lname, address):
         self.fname = fname
         self.lname = lname
@@ -16,14 +23,28 @@ class User1():
         return f"{self.fname}{self.lname}"
 
 
-class Account(User1):
-    def __init__(self, fname, lname, address, account_number, account_balance):
-        super().__init__(fname, lname, address)
+class Account():
+    def __init__(self, account_number, account_balance, user):
         self.account_number = account_number
         self.account_balance = account_balance
+        self.user = user
 
     def __str__(self):
         return f"{self.account_number}{self.account_balance}"
+    
+    def withdraw():
+        #TODO refactor to return just status code and current amount
+        withdraw_amount = int(input("Enter ammount you would like to withdraw: "))
+        balance = account.account_balace
+
+        if balance == 0:
+            return f"Balance on your account is 0."
+        if withdraw_amount > 0 and withdraw_amount <= balance:
+            print(f"Your balace is: {balance} Є")
+            balance -= withdraw_amount
+            return f"Your balance now is {balance} Є"
+        else:
+            return f"You don't have enough credit on your account!"
 
 
 class Credit():
@@ -33,20 +54,11 @@ class Credit():
     def __str__(self):
         return f"{self.int_rate}"
     
+def handleWithdraw(account, amount):
+    #result = account.withdraw(amount)
+    #if
 
 
-def withdraw():
-    withdraw_amount = int(input("Enter ammount you would like to withdraw: "))
-    balance = account.account_balace
-
-    if balance == 0:
-        return f"Balance on your account is 0."
-    if withdraw_amount > 0 and withdraw_amount <= balance:
-        print(f"Your balace is: {balance} Є")
-        balance -= withdraw_amount
-        return f"Your balance now is {balance} Є"
-    else:
-        return f"You don't have enough credit on your account!"
     
 
 
@@ -108,8 +120,8 @@ def saving():
 
 
 
-user = User1("John", "Doe", "Buffingtone Street 20, Illinois")
-account = Account("UA123 548 9874", 15000)
+user = User("John", "Doe", "Buffingtone Street 20, Illinois")
+account = Account("UA123 548 9874", 15000, user)
 credit = Credit(3.75)
 
 
