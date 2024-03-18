@@ -7,41 +7,59 @@ exit = 7
 def main():
     print("Welcome to simple bank!")
     print("What would you like to do?")
-
     while True:
         print("For printing the list of users, enter 1")
-        if exit == 1:
-            print(list_of_users)
         print("For adding a new user, enter 2")
+        print("For deposit, enter 3")
+        print("For withdrawal, enter 4")
+        print("For binding your savings, enter 5")
+        print("For making a loan, enter 6")
+        print("For exit the bank, enter 7")
+        exit = int(input("\nPlease, enter the number: "))
+        if exit <= 0 or exit > 7:
+            print("The number you entered is not valid!\n")
+            print("Please try again!")
+            print("------------\n")
+        if exit == 1:
+            print(f"Users in our bank are: {list_of_users}\n")
+            print("Is there anything else you would like to do?")
+            print("------------\n")
         if exit == 2:
             fname = input("Enter your first name: ")
             lname = input("Enter your last name: ")
             address = input("Enter your address: ")
             user = User(fname, lname, address)
             list_of_users.append(user)
-            print("You successfully added a new user.")
-        print("For deposit, enter 3")
+            print("You successfully added a new user.\n")
+            print("Is there anything else you would like to do?")
+            print("------------\n")
         if exit == 3:
             deposit_amount = int(input("Enter ammount you would like to deposit: "))
             deposit_money = handle_deposit(deposit_amount)
             print(deposit(deposit_money))
-        print("For withdraw, enter 4")
+            print("\nIs there anything else you would like to do?")
+            print("------------\n")
         if exit == 4:
             withdraw_amount = int(input("Enter ammount you would like to withdraw: "))
             withdraw_money = handle_withdraw(withdraw_amount)
             print(withdraw(withdraw_money))
-        print("For binding your savings, enter 5")
+            print("\nIs there anything else you would like to do?")
+            print("------------\n")
         if exit == 5:
             amt = int(input("Enter the amount you would like to bind: "))
             months = int(input("Enter months for binding: "))
             print(saving(amt,months))
-        print("For loan, enter 6")
+            print("\nIs there anything else you would like to do?")
+            print("------------\n")
         if exit == 6:
             amt = int(input("Enter the amount you would like to loan: "))
             months = int(input("Enter for how many months you would like to make a loan: "))
             print(loan(amt, months))
-        print("For exit, enter 7")
+            print("\nIs there anything else you would like to do?")
+            print("------------\n")
         if exit == 7:
+            print("\nThank you for using our services!")
+            print("Have a nice day!")
             break
 
 
@@ -52,7 +70,7 @@ class User():
         self.address = address
 
     def __str__(self):
-        return f"{self.fname}{self.lname}"
+        return f"{self.fname}{self.lname}{self.address}"
 
 
 class Account():
