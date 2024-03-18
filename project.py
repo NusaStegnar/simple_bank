@@ -1,17 +1,55 @@
 from datetime import date
 
-
+fixed_rate = 0.069
+list_of_users = []
+exit = 6
 
 def main():
-    pass
+    print("Welcome to simple bank!")
+    print("What would you like to do?")
+    while exit < 6:
+        print("For printing the list of users, enter 1")
+        if exit == 1:
+            print(list_of_users)
+        print("For adding a new user, enter 2")
+        if exit == 2:
+            fname = input("Enter your first name: ")
+            lname = input("Enter your last name: ")
+            address = input("Enter your address: ")
+            user = User(fname, lname, address)
+            list_of_users.append(user)
+            print("You successfully added a new user.")
+        print("For deposit, enter 3")
+        if exit == 3:
+            deposit_amount = int(input("Enter ammount you would like to deposit: "))
+            deposit_money = handle_deposit(deposit_amount)
+            print(deposit(deposit_money))
+        print("For withdraw, enter 4")
+        if exit == 4:
+            withdraw_amount = int(input("Enter ammount you would like to withdraw: "))
+            withdraw_money = handle_withdraw(withdraw_amount)
+            print(withdraw(withdraw_money))
+        print("For binding your savings, enter 5")
+        if exit == 5:
+            amt = int(input("Enter the amount you would like to bind: "))
+            months = int(input("Enter months for binding: "))
+            print(saving(amt,months))
+        print("For loan, enter 6")
+        if exit == 6:
+            amt = int(input("Enter the amount you would like to loan: "))
+            months = int(input("Enter for how many months you would like to make a loan: "))
+            print(loan(amt, months))
+
+        
 
     #new user, new account
 
     #TODO tests!!!
     #handleDepost()
     #handleWithdraw(account)
-
-
+    withdraw_amount = int(input("Enter ammount you would like to withdraw: "))
+    withdraw_money = handle_withdraw(withdraw_amount)
+   
 
 class User():
     def __init__(self, fname, lname, address):
@@ -32,19 +70,17 @@ class Account():
     def __str__(self):
         return f"{self.account_number}{self.account_balance}"
     
-    def withdraw():
+    def withdraw(balance, withdraw_amount):
         #TODO refactor to return just status code and current amount
-        withdraw_amount = int(input("Enter ammount you would like to withdraw: "))
         balance = account.account_balace
 
         if balance == 0:
-            return f"Balance on your account is 0."
+            return {"balance": balance,  "Status": "Failed"}
         if withdraw_amount > 0 and withdraw_amount <= balance:
-            print(f"Your balace is: {balance} Є")
             balance -= withdraw_amount
-            return f"Your balance now is {balance} Є"
+            return {"balance": balance,  "Status": "Succeeded"}
         else:
-            return f"You don't have enough credit on your account!"
+            return {"balance": balance,  "Status": "Failed"}
 
 
 class Credit():
@@ -54,28 +90,29 @@ class Credit():
     def __str__(self):
         return f"{self.int_rate}"
     
-def handleWithdraw(account, amount):
+    
+def handle_withdraw(account, amount):
     #result = account.withdraw(amount)
     #if
+    pass
 
 
+def handle_deposit(account, amount):
+    pass   
+
+
+def deposit(balance, deposit_amount):
     
-
-
-def deposit():
-    deposit_amount = int(input("Enter ammount you would like to deposit: "))
     balance = account.account_balance
 
     if deposit_amount > 0:
-        print(f"Your balace is: {balance} Є")
         balance += deposit_amount
         return f"Your new balance is {balance} Є"
 
 
-def loan():
-    loan = int(input("Enter the amount you would like to borrow: "))
-    year = int(input("Enter years of loan: "))
-    time = year * 12
+def loan(ammount, months):
+    
+    time = months
     int_rate = credit.int_rate
 
     print(f"Interest rate for your loan is {int_rate} %")
@@ -97,19 +134,18 @@ def loan():
 
 
 
-def saving():
-    amt = int(input("Enter the amount you would like to bind: "))
-    years = int(input("Enter year for binding: "))
+def saving(amt, months):
+    
     balance = account.account_balance
     int_rate = credit.int_rate 
 
     print(f"Your balance is {balance} Є")
-    print(f"You are binding {amt} Є for {years} years with interest rate {int_rate} %")
+    print(f"You are binding {amt} Є for {months} years with interest rate {int_rate} %")
 
-    for i in range(years):
+    for i in range(months):
         amt += amt * (int_rate * 100)
     balance += amt
-    return f"After {years} years your balance will be {balance}"
+    return f"After {months} years your balance will be {balance}"
 
 
 
