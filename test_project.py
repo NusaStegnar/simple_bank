@@ -1,5 +1,5 @@
 import pytest
-from project import withdraw, deposit, loan, saving, user, account, credit, andle_withdraw, handle_deposit
+from project import withdraw, deposit, loan, saving, User, account, credit, andle_withdraw, handle_deposit
 
 
 def main():
@@ -31,7 +31,7 @@ def test_saving():
 
 
 def test_user():
-    user1 = user("Jack", "London", "Puffington Street 10, London")
+    user1 = User("Jack", "London", "Puffington Street 10, London")
     user1.fname == "Jack"
     user1.fname != "Mandy"
     user1.lname == "London"

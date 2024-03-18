@@ -70,7 +70,7 @@ class User():
         self.address = address
 
     def __str__(self):
-        return f"{self.fname}{self.lname}{self.address}"
+        return f"{self.fname} {self.lname} {self.address}"
 
 
 class Account():
@@ -82,11 +82,14 @@ class Account():
     def __str__(self):
         return f"{self.account_number}{self.account_balance}"
     
-    def deposit(balance, deposit_amount):
-        balance = account.account_balance
-        if deposit_amount > 0:
-            balance += deposit_amount
-            return {"balance": balance}
+    def deposit(self, deposit_amount):
+        if deposit_amount <= 0:
+            return {"balance": balance,  "Status": "Failed"}
+            #TODO TransactionData(balance, Status.Fail)
+        
+        self.account_balance += deposit_amount
+        
+        return {"balance": self.account_balance}
         
     def withdraw(balance, withdraw_amount):
         #TODO refactor to return just status code and current amount
@@ -100,7 +103,7 @@ class Account():
         else:
             return {"balance": balance,  "Status": "Failed"}
         
-    def saving(amt, months):
+    def saving(amt, months):#TODO rename, savingInfo ??
         balance = account.account_balance
         int_rate = credit.int_rate 
         for i in range(months):
@@ -133,7 +136,7 @@ class Credit():
     
 def handle_withdraw(account, amount):
     #result = account.withdraw(amount)
-    #if
+    #if (result.status == Status.Fail)
     pass
 
 
