@@ -2,12 +2,13 @@ from datetime import date
 
 fixed_rate = 0.069
 list_of_users = []
-exit = 6
+exit = 7
 
 def main():
     print("Welcome to simple bank!")
     print("What would you like to do?")
-    while exit < 6:
+
+    while True:
         print("For printing the list of users, enter 1")
         if exit == 1:
             print(list_of_users)
@@ -39,17 +40,10 @@ def main():
             amt = int(input("Enter the amount you would like to loan: "))
             months = int(input("Enter for how many months you would like to make a loan: "))
             print(loan(amt, months))
+        print("For exit, enter 7")
+        if exit == 7:
+            break
 
-        
-
-    #new user, new account
-
-    #TODO tests!!!
-    #handleDepost()
-    #handleWithdraw(account)
-    withdraw_amount = int(input("Enter ammount you would like to withdraw: "))
-    withdraw_money = handle_withdraw(withdraw_amount)
-   
 
 class User():
     def __init__(self, fname, lname, address):
@@ -70,6 +64,12 @@ class Account():
     def __str__(self):
         return f"{self.account_number}{self.account_balance}"
     
+    def deposit(balance, deposit_amount):
+        balance = account.account_balance
+        if deposit_amount > 0:
+            balance += deposit_amount
+            return {"balance": balance}
+        
     def withdraw(balance, withdraw_amount):
         #TODO refactor to return just status code and current amount
         balance = account.account_balace
@@ -81,6 +81,14 @@ class Account():
             return {"balance": balance,  "Status": "Succeeded"}
         else:
             return {"balance": balance,  "Status": "Failed"}
+        
+    def saving(amt, months):
+        balance = account.account_balance
+        int_rate = credit.int_rate 
+        for i in range(months):
+            amt += amt * (int_rate * 100)
+        balance += amt
+        return {"months": months, "balance": balance}
 
 
 class Credit():
@@ -89,6 +97,20 @@ class Credit():
 
     def __str__(self):
         return f"{self.int_rate}"
+    
+    def loan(ammount, months):
+        time = months
+        int_rate = credit.int_rate
+        file = open("table.csv", "w")
+        file.write("Repayment schedule")
+        payment = ammount * (int_rate * 100) / time
+
+        date = date.today()
+
+        while payment > 0:
+            payment -= payment
+            
+            print(f"Your payment for")
     
     
 def handle_withdraw(account, amount):
@@ -99,72 +121,6 @@ def handle_withdraw(account, amount):
 
 def handle_deposit(account, amount):
     pass   
-
-
-def deposit(balance, deposit_amount):
-    
-    balance = account.account_balance
-
-    if deposit_amount > 0:
-        balance += deposit_amount
-        return f"Your new balance is {balance} Є"
-
-
-def loan(ammount, months):
-    
-    time = months
-    int_rate = credit.int_rate
-
-    print(f"Interest rate for your loan is {int_rate} %")
-
-
-    file = open("table.csv", "w")
-    file.write("Repayment schedule")
-    payment = loan * (int_rate * 100) / time
-
-    date = date.today()
-
-    while payment > 0:
-        payment -= payment
-        
-        print(f"Your payment for")
-
-
-    
-
-
-
-def saving(amt, months):
-    
-    balance = account.account_balance
-    int_rate = credit.int_rate 
-
-    print(f"Your balance is {balance} Є")
-    print(f"You are binding {amt} Є for {months} years with interest rate {int_rate} %")
-
-    for i in range(months):
-        amt += amt * (int_rate * 100)
-    balance += amt
-    return f"After {months} years your balance will be {balance}"
-
-
-
-
-
-
-
-
-
-
-user = User("John", "Doe", "Buffingtone Street 20, Illinois")
-account = Account("UA123 548 9874", 15000, user)
-credit = Credit(3.75)
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
