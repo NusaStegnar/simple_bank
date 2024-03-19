@@ -114,17 +114,20 @@ class Credit():
         months = int(input("Enter for how many months you would like to make a loan: "))
         self.margin = 0.02
 
-        file = open("table.csv", "w")
-        file.write("Repayment schedule")
-        payment = amt * (fixed_rate * self.margin) / months
-        while payment > 0:
-            for payment in range(months):
-                payment -= payment
-                file.write(str(payment))
-                file.write(str("\n"))
-            
-        file.close()
-        return file
+        monthly_repayment = amt * (fixed_rate + self.margin) * (1 + fixed_rate + self.margin)** months / (1 + fixed_rate + self.margin)** months - 1
+        print(f"Your monthly repayment amount will be", round(monthly_repayment, 2), "$")
+
+        for months in range(months):
+            amt -= monthly_repayment
+            if amt > monthly_repayment:
+                print(f"After", months + 1, "month your loan is:", end=" ")
+                print(int(amt), "$")
+            elif amt > 0:
+                print(f"After", months + 1, "month your loan is:", end=" ")
+                print(int(amt), "$")
+            else:
+                print(f"After", months + 1, "month you succeesfully repayed your loan!")
+                break
     
 
 class TransactionStatus(Enum):
@@ -153,8 +156,8 @@ def creating_new_user():
     list_of_users.append(user)
 
 
-def handle_deposit(amount):
-    deposit_result = Account.deposit(amount)  
+def handle_deposit(self, deposit_amount):
+    deposit_result = Account.deposit(deposit_amount)  
     if deposit_result[-1] == TransactionStatus.FAILED: 
         print(f"Your account balance is {Account.account_balance} $. Transaction Failed!")
     elif deposit_result[-1] == TransactionStatus.SUCCEEDED:
