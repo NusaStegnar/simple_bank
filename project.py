@@ -14,11 +14,11 @@ def main():
         print("For adding a new user, enter 2\n")
         print("For deposit, enter 3\n")
         print("For withdrawal, enter 4\n")
-        print("For binding your savings, enter 5\n")
-        print("For making a loan, enter 6\n")
+        print("For info about binding your savings, enter 5\n")
+        print("For info about loan repayment, enter 6\n")
         print("For exit the bank, enter 7\n")
 
-        user_input = input("\nPlease, enter the number: ")
+        user_input = (input("\nPlease, enter the number: "))
         if user_input.isalpha():
                 print("You must enter a number")
                 bank_try_again()
@@ -28,7 +28,8 @@ def main():
                 print("The number you entered is not valid!\n")
                 bank_try_again()
             if user_input == 1:
-                print(f"Users in our bank are: \n")
+                print("Users in our bank are: \n")
+                looping_trough_users_lists()
                 bank_question()
             if user_input == 2:
                 creating_new_user()
@@ -108,21 +109,22 @@ class Credit():
         balance += amt
         return (Account.account_balance, TransactionStatus.SUCCEEDED)
     
-    def loan(self, amt, months):
+    def loan_info(self, amt, months):
         amt = int(input("Enter the amount you would like to loan: "))
         months = int(input("Enter for how many months you would like to make a loan: "))
         self.margin = 0.02
-        pass
+
         file = open("table.csv", "w")
         file.write("Repayment schedule")
-        payment = ammount * (int_rate * 100) / time
-
-        date = date.today()
-
+        payment = amt * (fixed_rate * self.margin) / months
         while payment > 0:
-            payment -= payment
+            for payment in range(months):
+                payment -= payment
+                file.write(str(payment))
+                file.write(str("\n"))
             
-            print(f"Your payment for")
+        file.close()
+        return file
     
 
 class TransactionStatus(Enum):
