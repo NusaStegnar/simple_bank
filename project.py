@@ -3,6 +3,8 @@ from enum import Enum
 
 fixed_rate = 0.069
 list_of_users = []
+current_user = None
+current_bank_account_no = 1
 user_input = 7
 
 def main():
@@ -73,9 +75,8 @@ class Account():
         return f"{self.account_number} {self.account_balance}"
     
     def deposit(self, deposit_amount):
-        deposit_amount = int(input("Enter ammount you would like to deposit: "))
         if deposit_amount <= 0:
-            return (self.account_balance, TransactionStatus.FAILED)
+            return Result(self.account_balance, TransactionStatus.FAILED)
         else:
             self.account_balance += deposit_amount
             return (self.account_balance, TransactionStatus.SUCCEEDED)
@@ -87,7 +88,7 @@ class Account():
             return (self.account_balance, TransactionStatus.FAILED)
         if withdraw_amount > 0 and withdraw_amount <= self.account_balance:
             self.account_balance -= withdraw_amount
-            return (self.account_balance, TransactionStatus.SUCCEEDED)
+            return [self.account_balance, TransactionStatus.SUCCEEDED]
         else:
             return (self.account_balance, TransactionStatus.FAILED)
 
@@ -102,7 +103,7 @@ class Credit():
     def saving_info(self, amt, months):
         amt = int(input("Enter the amount you would like to bind: "))
         months = int(input("Enter number of months for binding: "))
-        balance = Account.account_balance
+        balance = current_user.account_balance
         self.margin = 0.01
         for i in range(months):
             amt += amt * fixed_rate * self.margin
@@ -135,6 +136,12 @@ class TransactionStatus(Enum):
     SUCCEEDED = 2
 
 
+class Result():
+    def __init__(self, balance, status):
+        self.balance = balance
+        self.status = status
+
+
 def bank_question():
     print("\nIs there anything else you would like to do?\n------------\n")
 
@@ -156,12 +163,13 @@ def creating_new_user():
     list_of_users.append(user)
 
 
-def handle_deposit(self, deposit_amount):
-    deposit_result = Account.deposit(deposit_amount)  
-    if deposit_result[-1] == TransactionStatus.FAILED: 
-        print(f"Your account balance is {Account.account_balance} $. Transaction Failed!")
-    elif deposit_result[-1] == TransactionStatus.SUCCEEDED:
-        print(f"Transaction Succeeded! You made a deposit of {amount} $. Your account balnce is now {Account.account_balance} $.")
+def handle_deposit():
+    deposit_amount = int(input("Enter ammount you would like to deposit: ")) 
+    deposit_result = current_user.account.deposit(deposit_amount)  
+    if deposit_result.status == TransactionStatus.FAILED: 
+        print(f"Your account balance is {deposit_result.account_balance} $. Transaction Failed!")
+    elif deposit_result.status == TransactionStatus.SUCCEEDED:
+        print(f"Transaction Succeeded! You made a deposit of {deposit_amount} $. Your account balnce is now {deposit_result.account_balance} $.")
 
 
 def handle_withdraw(account, amount):
