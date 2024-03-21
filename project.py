@@ -44,7 +44,7 @@ def main():
                 handle_withdraw()
                 bank_question()
             if user_input == 5:
-                saving_info()
+                handle_saving_info()
                 bank_question()
             if user_input == 6:
                 loan_info()
@@ -101,14 +101,15 @@ class Credit():
         return f"{self.margin}"
     
     def saving_info(self, amt, months):
-        amt = int(input("Enter the amount you would like to bind: "))
-        months = int(input("Enter number of months for binding: "))
+        # amt = int(input("Enter the amount you would like to bind: "))
+        # months = int(input("Enter number of months for binding: "))
         balance = current_user.account_balance
         self.margin = 0.01
         for i in range(months):
             amt += amt * fixed_rate * self.margin
         balance += amt
-        print(f"After binding {amt} $ for {months} months your account balance will be {balance} $")
+        #print(f"After binding {amt} $ for {months} months your account balance will be {balance} $")
+        return balance
     
     def loan_info(self, amt, months):
         amt = int(input("Enter the amount you would like to loan: "))
@@ -196,6 +197,13 @@ def handle_withdraw():
         print(f"Your account balance is {withdraw_result.account_balance} $. Transaction Failed!")
     elif withdraw_result.status == TransactionStatus.SUCCEEDED:
         print(f"Transaction Succeeded! You made a withdraw of {withdraw_amount} $. Your account balnce is now {withdraw_result.account_balance} $.")
+
+
+def handle_saving_info():
+    amt = int(input("Enter the amount you would like to bind: "))
+    months = int(input("Enter number of months for binding: "))
+    result_info = current_user.account_balance.saving_info(amt, months)
+    print(f"After binding {amt} $ for {months} months your account balance will be {result_info} $")
 
 
 if __name__ == "__main__":
