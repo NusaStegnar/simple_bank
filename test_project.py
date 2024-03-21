@@ -5,8 +5,8 @@ from project import withdraw, deposit, loan, saving, User, account, credit, andl
 def main():
     test_handle_withdraw()
     test_handle_deposit()
-    test_loan()
-    test_saving()
+    test_loan_info()
+    test_saving_info()
 
 
 def test_handle_withdraw():
@@ -22,11 +22,11 @@ def test_handle_deposit():
     pass
 
 
-def test_loan():
+def test_loan_info():
     pass
 
 
-def test_saving():
+def test_saving_info():
     pass
 
 
@@ -38,6 +38,8 @@ def test_user():
     user1.lname != "Bond"
     user1.address == "Puffington Street 10, London"
     user1.address != "Brown Street 20, Cardiff"
+    user1.account_number == 1
+    user1.account_balance == 0
 
 
 def test_account():
