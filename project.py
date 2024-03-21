@@ -56,15 +56,15 @@ def main():
 
 
 class User():
-    def __init__(self, fname, lname, address, account_number, account_balance):
+    def __init__(self, fname, lname, address, account):
         self.fname = fname
         self.lname = lname
         self.address = address
-        self.account_number = account_number
-        self.account_balance = account_balance
+        self.account = account
+        
 
     def __str__(self):
-        return f"Name: {self.fname} {self.lname} \nAddress: {self.address} \nAccount number: {self.account_number } \nAccount balance: {self.account_balance}"
+        return f"Name: {self.fname} {self.lname} \nAddress: {self.address} \nUser account: {self.account}"
 
 
 class Account():
@@ -101,15 +101,13 @@ class Credit():
         return f"{self.margin}"
     
     def saving_info(self, amt, months):
-        # amt = int(input("Enter the amount you would like to bind: "))
-        # months = int(input("Enter number of months for binding: "))
-        balance = current_user.account_balance
         self.margin = 0.01
+        interest = fixed_rate + self.margin
+        new_interest = 0
         for i in range(months):
-            amt += amt * fixed_rate * self.margin
-        balance += amt
-        #print(f"After binding {amt} $ for {months} months your account balance will be {balance} $")
-        return balance
+            amt += amt * interest
+            new_interest += interest
+        return amt, new_interest
     
     def loan_info(self, amt, months):
         amt = int(input("Enter the amount you would like to loan: "))
@@ -176,34 +174,34 @@ def creating_new_user():
     address = input("Enter your address: ")
     global current_bank_account_number
     current_bank_account_number = current_bank_account_number + 1
-    account_balance = 0
-    user = User(fname, lname, address, current_bank_account_number, account_balance)
+    account = Account(current_bank_account_number, account_balance=0)
+    user = User(fname, lname, address, account)
     list_of_users.append(user)
 
 
 def handle_deposit():
     deposit_amount = int(input("Enter ammount you would like to deposit: ")) 
-    deposit_result = current_user.account_balance.deposit(deposit_amount)  
-    if deposit_result.status == TransactionStatus.FAILED: 
-        print(f"Your account balance is {deposit_result.account_balance} $. Transaction Failed!")
-    elif deposit_result.status == TransactionStatus.SUCCEEDED:
-        print(f"Transaction Succeeded! You made a deposit of {deposit_amount} $. Your account balnce is now {deposit_result.account_balance} $.")
+    deposit_result = current_user.account.deposit(deposit_amount)  
+    if deposit_result[-1] == TransactionStatus.FAILED: 
+        print(f"Your account balance is {deposit_result[0]} $. Transaction Failed!")
+    elif deposit_result[-1] == TransactionStatus.SUCCEEDED:
+        print(f"Transaction Succeeded! You made a deposit of {deposit_amount} $. Your account balance is now {deposit_result[0]} $.")
 
 
 def handle_withdraw():
     withdraw_amount = int(input("Enter ammount you would like to withdraw: "))
-    withdraw_result = current_user.account_balance.withdraw(withdraw_amount)
+    withdraw_result = current_user.account.withdraw(withdraw_amount)
     if withdraw_result.status == TransactionStatus.FAILED:
-        print(f"Your account balance is {withdraw_result.account_balance} $. Transaction Failed!")
+        print(f"Your account balance is {withdraw_result.balance} $. Transaction Failed!")
     elif withdraw_result.status == TransactionStatus.SUCCEEDED:
-        print(f"Transaction Succeeded! You made a withdraw of {withdraw_amount} $. Your account balnce is now {withdraw_result.account_balance} $.")
+        print(f"Transaction Succeeded! You made a withdrawal of {withdraw_amount} $. Your account balance is now {withdraw_result.balance} $.")
 
 
 def handle_saving_info():
     amt = int(input("Enter the amount you would like to bind: "))
     months = int(input("Enter number of months for binding: "))
-    result_info = current_user.account_balance.saving_info(amt, months)
-    print(f"After binding {amt} $ for {months} months your account balance will be {result_info} $")
+    result_info = Credit.saving_info(amt, months)
+    print(f"After binding {amt} $ for {months} months you will have {result_info.amt} $, of which interest will be {result_info.new_interest}")
 
 
 if __name__ == "__main__":
