@@ -4,7 +4,7 @@ from enum import Enum
 fixed_rate = 0.069
 list_of_users = []
 current_user = None
-current_bank_account_no = 1
+account_number = 1
 user_input = 7
 
 def main():
@@ -32,6 +32,8 @@ def main():
             if user_input == 1:
                 print("Users in our bank are: \n")
                 looping_trough_users_lists()
+                print("Select current user: ")
+                select_current_user()
                 bank_question()
             if user_input == 2:
                 creating_new_user()
@@ -56,20 +58,20 @@ def main():
 
 
 class User():
-    def __init__(self, fname, lname, address):
+    def __init__(self, fname, lname, address, account):
         self.fname = fname
         self.lname = lname
         self.address = address
+        self.account = account
 
     def __str__(self):
-        return f"{self.fname} {self.lname} {self.address}"
+        return f"{self.fname} {self.lname} {self.address} {self.account}"
 
 
 class Account():
-    def __init__(self, account_number, account_balance, user):
+    def __init__(self, account_number, account_balance):
         self.account_number = account_number
         self.account_balance = account_balance
-        self.user = user
 
     def __str__(self):
         return f"{self.account_number} {self.account_balance}"
@@ -83,14 +85,13 @@ class Account():
             
         
     def withdraw(self, withdraw_amount):
-        withdraw_amount = int(input("Enter ammount you would like to withdraw: "))
         if self.account_balance == 0:
-            return (self.account_balance, TransactionStatus.FAILED)
+            return Result(self.account_balance, TransactionStatus.FAILED)
         if withdraw_amount > 0 and withdraw_amount <= self.account_balance:
             self.account_balance -= withdraw_amount
-            return [self.account_balance, TransactionStatus.SUCCEEDED]
+            return Result(self.account_balance, TransactionStatus.SUCCEEDED)
         else:
-            return (self.account_balance, TransactionStatus.FAILED)
+            return Result(self.account_balance, TransactionStatus.FAILED)
 
 
 class Credit():
@@ -108,7 +109,7 @@ class Credit():
         for i in range(months):
             amt += amt * fixed_rate * self.margin
         balance += amt
-        return (Account.account_balance, TransactionStatus.SUCCEEDED)
+        print(f"After binding {amt} $ for {months} months your account balance will be {balance} $")
     
     def loan_info(self, amt, months):
         amt = int(input("Enter the amount you would like to loan: "))
@@ -155,11 +156,27 @@ def looping_trough_users_lists():
         print(f"{u}\n")
 
 
+def select_current_user():
+    current_user = input("Enter a number: ")
+    for i in range(len(list_of_users + 1)):
+        if current_user.isalpha:
+            print("You must enter a number")
+            bank_try_again()
+        if current_user <= 0 or current_user > len(list_of_users):
+            print("The number you entered is not valid!\n")
+            bank_try_again()
+        else:
+            print(f"{list_of_users[i+1]}")
+            current_user = list_of_users[i+1]
+
+
 def creating_new_user():
     fname = input("Enter your first name: ")
     lname = input("Enter your last name: ")
     address = input("Enter your address: ")
-    user = User(fname, lname, address)
+    account_number = account_number + 1
+    account_balance = 0
+    user = User(fname, lname, address, account_number, account_balance)
     list_of_users.append(user)
 
 
@@ -172,10 +189,13 @@ def handle_deposit():
         print(f"Transaction Succeeded! You made a deposit of {deposit_amount} $. Your account balnce is now {deposit_result.account_balance} $.")
 
 
-def handle_withdraw(account, amount):
-    #result = account.withdraw(amount)
-    #if (result.status == Status.Fail)
-    pass
+def handle_withdraw():
+    withdraw_amount = int(input("Enter ammount you would like to withdraw: "))
+    withdraw_result = current_user.account.withdraw(withdraw_amount)
+    if withdraw_result.status == TransactionStatus.FAILED:
+        print(f"Your account balance is {withdraw_result.account_balance} $. Transaction Failed!")
+    elif withdraw_result.status == TransactionStatus.SUCCEEDED:
+        print(f"Transaction Succeeded! You made a withdraw of {withdraw_amount} $. Your account balnce is now {withdraw_result.account_balance} $.")
 
 
 def handle_saving_info():
