@@ -107,13 +107,10 @@ class Credit():
         for i in range(months):
             amt += amt * interest
             new_interest += interest
-        return amt, new_interest
+        return f"After binding {amt} $ for {months} months your interest will be {new_interest}"
     
     def loan_info(self, amt, months):
-        amt = int(input("Enter the amount you would like to loan: "))
-        months = int(input("Enter for how many months you would like to make a loan: "))
         self.margin = 0.02
-
         monthly_repayment = amt * (fixed_rate + self.margin) * (1 + fixed_rate + self.margin)** months / (1 + fixed_rate + self.margin)** months - 1
         print(f"Your monthly repayment amount will be", round(monthly_repayment, 2), "$")
 
@@ -201,7 +198,16 @@ def handle_saving_info():
     amt = int(input("Enter the amount you would like to bind: "))
     months = int(input("Enter number of months for binding: "))
     result_info = Credit.saving_info(amt, months)
-    print(f"After binding {amt} $ for {months} months you will have {result_info.amt} $, of which interest will be {result_info.new_interest}")
+    #print(f"After binding {amt} $ for {months} months you will have {result_info.amt} $, of which interest will be {result_info.new_interest}")
+    print(result_info)
+
+def handle_loan_info():
+    amt = int(input("Enter the amount you would like to loan: "))
+    months = int(input("Enter for how many months you would like to make a loan: "))
+    result_loan = Credit.loan_info(amt, months)
+
+
+
 
 
 if __name__ == "__main__":
