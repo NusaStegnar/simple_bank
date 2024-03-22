@@ -1,5 +1,5 @@
 import pytest
-from project import withdraw, deposit, loan, saving, User, account, credit, andle_withdraw, handle_deposit
+from project import withdraw, deposit, loan, saving, User, Account, andle_withdraw, handle_deposit
 
 
 def main():
@@ -38,22 +38,15 @@ def test_user():
     user1.lname != "Bond"
     user1.address == "Puffington Street 10, London"
     user1.address != "Brown Street 20, Cardiff"
-    user1.account_number == 1
-    user1.account_balance == 0
 
 
 def test_account():
-    account1 = account("123456", 20)
+    account1 = Account("123456", 20)
     account1.account_number == "123456"
     account1.account_number != "654321"
     account1.account_balance == 20
     account1.account_balance != 50
 
-
-def test_credit():
-    credit1 = credit(3.5)
-    credit1.int_rate == 3.5
-    credit1.int_rate != 5
 
 
 if __name__ == "__main__":

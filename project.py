@@ -1,6 +1,6 @@
 from enum import Enum
 
-fixed_rate = 0.069
+fixed_rate = 0.02
 list_of_users = []
 current_user = None
 current_bank_account_number = 0
@@ -62,9 +62,8 @@ class User():
         self.address = address
         self.account = account
         
-
     def __str__(self):
-        return f"Name: {self.fname} {self.lname} \nAddress: {self.address} \nUser account: {self.account}"
+        return f"Name: {self.fname} {self.lname} \nAddress: {self.address} \nUser account {self.account}"
 
 
 class Account():
@@ -73,14 +72,14 @@ class Account():
         self.account_balance = account_balance
 
     def __str__(self):
-        return f"{self.account_number} {self.account_balance}"
+        return f"\nAccount number: {self.account_number} \nAccount balance: {self.account_balance}"
     
     def deposit(self, deposit_amount):
         if deposit_amount <= 0:
             return Result(self.account_balance, TransactionStatus.FAILED)
         else:
             self.account_balance += deposit_amount
-            return (self.account_balance, TransactionStatus.SUCCEEDED)
+            return Result(self.account_balance, TransactionStatus.SUCCEEDED)
             
         
     def withdraw(self, withdraw_amount):
@@ -94,24 +93,18 @@ class Account():
 
 
 class Credit():
-    def __init__(self, margin):
-        self.margin = margin
-
-    def __str__(self):
-        return f"{self.margin}"
     
-    def saving_info(self, amt, months):
-        self.margin = 0.01
-        interest = fixed_rate + self.margin
-        new_interest = 0
+    def saving_info(amt, months):
+        margin = 0.01
+        interest = fixed_rate - margin
+        interest_value = 0
         for i in range(months):
-            amt += amt * interest
-            new_interest += interest
-        return f"After binding {amt} $ for {months} months your interest will be {new_interest}"
+            interest_value += amt * (interest / 12)
+        return f"After binding {amt} $ for {months} months with interest rate {interest} your interest will be {interest_value}."
     
-    def loan_info(self, amt, months):
-        self.margin = 0.02
-        monthly_repayment = amt * (fixed_rate + self.margin) * (1 + fixed_rate + self.margin)** months / (1 + fixed_rate + self.margin)** months - 1
+    def loan_info(amt, months):
+        margin = 0.02
+        monthly_repayment = amt * (fixed_rate + margin) * (1 + fixed_rate + margin)** months / (1 + fixed_rate + margin)** months - 1
         print(f"Your monthly repayment amount will be", round(monthly_repayment, 2), "$")
 
         for months in range(months):
@@ -179,10 +172,10 @@ def creating_new_user():
 def handle_deposit():
     deposit_amount = int(input("Enter ammount you would like to deposit: ")) 
     deposit_result = current_user.account.deposit(deposit_amount)  
-    if deposit_result[-1] == TransactionStatus.FAILED: 
-        print(f"Your account balance is {deposit_result[0]} $. Transaction Failed!")
-    elif deposit_result[-1] == TransactionStatus.SUCCEEDED:
-        print(f"Transaction Succeeded! You made a deposit of {deposit_amount} $. Your account balance is now {deposit_result[0]} $.")
+    if deposit_result.status == TransactionStatus.FAILED: 
+        print(f"Your account balance is {deposit_result.balance} EUR. Transaction Failed!")
+    elif deposit_result.status == TransactionStatus.SUCCEEDED:
+        print(f"Transaction Succeeded! You made a deposit of {deposit_amount} EUR. Your account balance is now {deposit_result.balance} $.")
 
 
 def handle_withdraw():
@@ -200,6 +193,7 @@ def handle_saving_info():
     result_info = Credit.saving_info(amt, months)
     #print(f"After binding {amt} $ for {months} months you will have {result_info.amt} $, of which interest will be {result_info.new_interest}")
     print(result_info)
+    input("For continue please press enter ...")
 
 def handle_loan_info():
     amt = int(input("Enter the amount you would like to loan: "))
