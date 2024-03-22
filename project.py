@@ -1,6 +1,6 @@
 from enum import Enum
 
-fixed_rate = 0.02
+fixed_rate = 0.069
 list_of_users = []
 current_user = None
 current_bank_account_number = 0
@@ -11,6 +11,7 @@ def main():
     print("What would you like to do?\n")
 
     while True:
+        print("----------------------------------------------")
         print("For printing the list of users, enter 1\n")
         print("For adding a new user, enter 2\n")
         print("For deposit, enter 3\n")
@@ -18,6 +19,7 @@ def main():
         print("For info about binding your savings, enter 5\n")
         print("For info about loan repayment, enter 6\n")
         print("For exit the bank, enter 7\n")
+        print("-----------------------------------------------")
 
         user_input = (input("\nPlease, enter the number: "))
         if user_input.isalpha():
@@ -47,7 +49,7 @@ def main():
                 handle_saving_info()
                 bank_question()
             if user_input == 6:
-                loan_info()
+                handle_loan_info()
                 bank_question()
             if user_input == 7:
                 print("\nThank you for using our services!")
@@ -98,26 +100,29 @@ class Credit():
         margin = 0.01
         interest = fixed_rate - margin
         interest_value = 0
+        percentage = "{:.0%}".format(interest)
         for i in range(months):
             interest_value += amt * (interest / 12)
-        return f"After binding {amt} $ for {months} months with interest rate {interest} your interest will be {interest_value}."
+            interest_value = round(interest_value,2)
+        return f"After binding {amt} EUR for {months} months with interest rate {percentage}, your interest will be {interest_value}."
     
     def loan_info(amt, months):
         margin = 0.02
-        monthly_repayment = amt * (fixed_rate + margin) * (1 + fixed_rate + margin)** months / (1 + fixed_rate + margin)** months - 1
-        print(f"Your monthly repayment amount will be", round(monthly_repayment, 2), "$")
+        monthly_repayment = round(amt * (fixed_rate + margin) / 1 - (1 + fixed_rate + margin)** months)
+        print(f"Your monthly repayment amount will be", round(monthly_repayment), "EUR")
 
         for months in range(months):
             amt -= monthly_repayment
             if amt > monthly_repayment:
-                print(f"After", months + 1, "month your loan is:", end=" ")
-                print(int(amt), "$")
+                print(f"After", months + 1, "month you still have to repay:", end=" ")
+                print(int(amt), "EUR")
             elif amt > 0:
-                print(f"After", months + 1, "month your loan is:", end=" ")
-                print(int(amt), "$")
+                print(f"After", months + 1, "month you still have to repay:", end=" ")
+                print(int(amt), "EUR")
             else:
                 print(f"After", months + 1, "month you succeesfully repayed your loan!")
                 break
+        input("\nFor continue please press enter ...")
     
 
 class TransactionStatus(Enum):
@@ -153,9 +158,11 @@ def select_current_user():
         print("\nThe number you entered is not valid!\n")
         bank_try_again()
     else:
+        print("\nYou selected: ")
         print(f"\n{list_of_users[user-1]}")
         global current_user 
         current_user = list_of_users[user-1]
+        input("\nFor continue please press enter ...")
 
 
 def creating_new_user():
@@ -173,35 +180,34 @@ def handle_deposit():
     deposit_amount = int(input("Enter ammount you would like to deposit: ")) 
     deposit_result = current_user.account.deposit(deposit_amount)  
     if deposit_result.status == TransactionStatus.FAILED: 
-        print(f"Your account balance is {deposit_result.balance} EUR. Transaction Failed!")
+        print(f"\nour account balance is {deposit_result.balance} EUR. Transaction Failed!")
+        input("\nFor continue please press enter ...")
     elif deposit_result.status == TransactionStatus.SUCCEEDED:
-        print(f"Transaction Succeeded! You made a deposit of {deposit_amount} EUR. Your account balance is now {deposit_result.balance} $.")
+        print(f"\nTransaction Succeeded! You made a deposit of {deposit_amount} EUR. Your account balance is now {deposit_result.balance} EUR.")
+        input("\nFor continue please press enter ...")
 
 
 def handle_withdraw():
     withdraw_amount = int(input("Enter ammount you would like to withdraw: "))
     withdraw_result = current_user.account.withdraw(withdraw_amount)
     if withdraw_result.status == TransactionStatus.FAILED:
-        print(f"Your account balance is {withdraw_result.balance} $. Transaction Failed!")
+        print(f"\nYour account balance is {withdraw_result.balance} EUR. Transaction Failed!")
+        input("\nFor continue please press enter ...")
     elif withdraw_result.status == TransactionStatus.SUCCEEDED:
-        print(f"Transaction Succeeded! You made a withdrawal of {withdraw_amount} $. Your account balance is now {withdraw_result.balance} $.")
-
+        print(f"\nTransaction Succeeded! You made a withdrawal of {withdraw_amount} EUR. Your account balance is now {withdraw_result.balance} EUR.")
+        input("\nFor continue please press enter ...")
 
 def handle_saving_info():
     amt = int(input("Enter the amount you would like to bind: "))
     months = int(input("Enter number of months for binding: "))
     result_info = Credit.saving_info(amt, months)
-    #print(f"After binding {amt} $ for {months} months you will have {result_info.amt} $, of which interest will be {result_info.new_interest}")
     print(result_info)
-    input("For continue please press enter ...")
+    input("\nFor continue please press enter ...")
 
 def handle_loan_info():
     amt = int(input("Enter the amount you would like to loan: "))
     months = int(input("Enter for how many months you would like to make a loan: "))
-    result_loan = Credit.loan_info(amt, months)
-
-
-
+    Credit.loan_info(amt, months)
 
 
 if __name__ == "__main__":

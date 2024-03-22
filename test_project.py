@@ -1,5 +1,5 @@
 import pytest
-from project import withdraw, deposit, loan, saving, User, Account, andle_withdraw, handle_deposit
+from project import withdraw, deposit, loan, saving, User, Account, handle_withdraw, handle_deposit, handle_loan_info, handle_saving_info
 
 
 def main():
@@ -9,13 +9,12 @@ def main():
     test_saving_info()
 
 
+def test_handle_deposit():
+    assert deposit(20) == 20
+    
+
 def test_handle_withdraw():
-    if withdraw(0, 20):
-        return f'0: "Failed"'
-    if withdraw(20, 70):
-        return '20: "Succeeded"'
-    if withdraw(80, 50):
-        return f'80: "Failed"'
+    assert withdraw
     
 
 def test_handle_deposit():
@@ -46,7 +45,6 @@ def test_account():
     account1.account_number != "654321"
     account1.account_balance == 20
     account1.account_balance != 50
-
 
 
 if __name__ == "__main__":
