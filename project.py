@@ -1,6 +1,6 @@
 from enum import Enum
 
-fixed_rate = 0.069
+fixed_rate = 0.04
 list_of_users = []
 current_user = None
 current_bank_account_number = 0
@@ -108,19 +108,19 @@ class Credit():
     
     def loan_info(amt, months):
         margin = 0.02
-        monthly_repayment = round(amt * (fixed_rate + margin) / 1 - (1 + fixed_rate + margin)** months)
+        monthly_repayment = round(amt * (fixed_rate + margin) / (1 - (1/((1 + fixed_rate + margin)**months))))
         print(f"Your monthly repayment amount will be", round(monthly_repayment), "EUR")
 
-        for months in range(months):
+        for month in range(months):
             amt -= monthly_repayment
             if amt > monthly_repayment:
-                print(f"After", months + 1, "month you still have to repay:", end=" ")
+                print(f"After", month + 1, "month you still have to repay:", end=" ")
                 print(int(amt), "EUR")
             elif amt > 0:
-                print(f"After", months + 1, "month you still have to repay:", end=" ")
+                print(f"After", month + 1, "month you still have to repay:", end=" ")
                 print(int(amt), "EUR")
             else:
-                print(f"After", months + 1, "month you succeesfully repayed your loan!")
+                print(f"After", month + 1, "month you succeesfully repayed your loan!")
                 break
         input("\nFor continue please press enter ...")
     
@@ -197,12 +197,14 @@ def handle_withdraw():
         print(f"\nTransaction Succeeded! You made a withdrawal of {withdraw_amount} EUR. Your account balance is now {withdraw_result.balance} EUR.")
         input("\nFor continue please press enter ...")
 
+
 def handle_saving_info():
     amt = int(input("Enter the amount you would like to bind: "))
     months = int(input("Enter number of months for binding: "))
     result_info = Credit.saving_info(amt, months)
     print(result_info)
     input("\nFor continue please press enter ...")
+
 
 def handle_loan_info():
     amt = int(input("Enter the amount you would like to loan: "))
