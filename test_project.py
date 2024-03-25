@@ -1,5 +1,17 @@
 import pytest
-from project import User, Account, TransactionStatus
+from project import User, Account, TransactionStatus, Credit
+
+
+def test_get_saving_interest():
+    assert Credit.get_saving_interest() == 0.03
+
+
+def test_get_loan_interest():
+    assert Credit.get_loan_interest() == 0.06
+
+
+def test_get_loan_monthly_repayment():
+    assert Credit.get_loan_monthly_repayment(50000, 48, 0.06) == 1.174
 
 
 def test_loan_info():
@@ -7,17 +19,15 @@ def test_loan_info():
 
 
 def test_saving_info():
-    pass
+    assert Credit.saving_info(2000, 12, 0.03) == 60.0
 
 
 def test_user():
-    user1 = User("Jack", "London", "Puffington Street 10, London")
-    user1.fname == "Jack"
-    user1.fname != "Mandy"
-    user1.lname == "London"
-    user1.lname != "Bond"
-    user1.address == "Puffington Street 10, London"
-    user1.address != "Brown Street 20, Cardiff"
+    user1 = User("Jack", "London", "Puffington Street 10, London", 1)
+    assert user1.fname == "Jack"
+    assert user1.lname == "London"
+    assert user1.address == "Puffington Street 10, London"
+    assert user1.account == 1
 
 
 def test_account():

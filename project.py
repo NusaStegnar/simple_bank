@@ -95,22 +95,38 @@ class Account():
 
 
 class Credit():
-    
-    def saving_info(amt, months):
+
+
+    def get_saving_interest():
         margin = 0.01
         interest = fixed_rate - margin
+        return interest
+    
+    
+    def saving_info(amt, months, interest):
         interest_value = 0
-        percentage = "{:.0%}".format(interest)
         for i in range(months):
             interest_value += amt * (interest / 12)
             interest_value = round(interest_value,2)
-        return f"After binding {amt} EUR for {months} months with interest rate {percentage}, your interest will be {interest_value}."
+        return interest_value
     
-    def loan_info(amt, months):
-        margin = 0.02
-        monthly_repayment = round(amt * (fixed_rate + margin) / (1 - (1/((1 + fixed_rate + margin)**months))))
-        print(f"Your monthly repayment amount will be", round(monthly_repayment), "EUR")
 
+    def get_loan_interest():
+        margin = 0.02
+        interest = fixed_rate + margin
+        return interest
+    
+
+    def get_loan_monthly_repayment(amt, months, interest):
+        monthly_rate = interest/12
+        monthly_repayment = amt*((monthly_rate*((monthly_rate + 1)**months)/(((monthly_rate + 1)**months) - 1)))
+        return round(monthly_repayment)
+        
+
+    
+    
+    def loan_info(amt, months, monthly_repayment):
+               
         for month in range(months):
             amt -= monthly_repayment
             if amt > monthly_repayment:
@@ -201,15 +217,20 @@ def handle_withdraw():
 def handle_saving_info():
     amt = int(input("Enter the amount you would like to bind: "))
     months = int(input("Enter number of months for binding: "))
-    result_info = Credit.saving_info(amt, months)
-    print(result_info)
+    interest_rate = Credit.get_saving_interest()
+    result_info = Credit.saving_info(amt, months, interest_rate)
+    percentage = "{:.0%}".format(interest_rate)
+    print(f"After binding {amt} EUR for {months} months with interest rate {percentage}, your interest will be {result_info}.")
     input("\nFor continue please press enter ...")
 
 
 def handle_loan_info():
     amt = int(input("Enter the amount you would like to loan: "))
     months = int(input("Enter for how many months you would like to make a loan: "))
-    Credit.loan_info(amt, months)
+    loan_interest = Credit.get_loan_interest()
+    repayment = Credit.get_loan_monthly_repayment(amt, months)
+    print(f"Your monthly repayment amount will be", round(repayment), "EUR")
+    result = Credit.loan_info(amt, months, loan_interest)
 
 
 if __name__ == "__main__":
