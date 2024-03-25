@@ -11,11 +11,7 @@ def test_get_loan_interest():
 
 
 def test_get_loan_monthly_repayment():
-    assert Credit.get_loan_monthly_repayment(50000, 48, 0.06) == 1.174
-
-
-def test_loan_info():
-    pass
+    assert Credit.get_loan_monthly_repayment(50000, 48, 0.06) == 1174
 
 
 def test_saving_info():

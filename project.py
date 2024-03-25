@@ -38,6 +38,7 @@ def main():
             if user_input == 2:
                 creating_new_user()
                 print("You successfully added a new user.\n")
+                input("\nFor continue please press enter ...")
                 bank_question()
             if user_input == 3:
                 handle_deposit()
@@ -121,13 +122,11 @@ class Credit():
         monthly_rate = interest/12
         monthly_repayment = amt*((monthly_rate*((monthly_rate + 1)**months)/(((monthly_rate + 1)**months) - 1)))
         return round(monthly_repayment)
-        
-
+          
     
-    
-    def loan_info(amt, months, monthly_repayment):
-               
+    def loan_info(amt, months, monthly_repayment, interest):  
         for month in range(months):
+            amt += amt * (interest/12)
             amt -= monthly_repayment
             if amt > monthly_repayment:
                 print(f"After", month + 1, "month you still have to repay:", end=" ")
@@ -228,10 +227,10 @@ def handle_loan_info():
     amt = int(input("Enter the amount you would like to loan: "))
     months = int(input("Enter for how many months you would like to make a loan: "))
     loan_interest = Credit.get_loan_interest()
-    repayment = Credit.get_loan_monthly_repayment(amt, months)
-    print(f"Your monthly repayment amount will be", round(repayment), "EUR")
-    result = Credit.loan_info(amt, months, loan_interest)
-
+    repayment = Credit.get_loan_monthly_repayment(amt, months, loan_interest)
+    print(f"\nYour monthly repayment amount will be", round(repayment), "EUR\n")
+    Credit.loan_info(amt, months, repayment, loan_interest)
+    
 
 if __name__ == "__main__":
     main()
