@@ -1,9 +1,13 @@
 from enum import Enum
 
 fixed_rate = 0.04
-list_of_users = []
+list_of_users = ["Name: Nusa Stegnar\nAddress: Komenda, Slovenia\nUser Account\nAccount number: 1\nAccount balance: 50\n",
+                 "Name: Joe Doe\nAddress: Santa Barbara, California\nUser Account\nAccount number: 2\nAccount balance: 720\n",
+                 "Name: Marie Hulz\nAddress: Berlin, Germany\nUser Account\nAccount number: 3\nAccount balance: 95\n",
+                 "Name: Kirsten Schulltz\nAddress: Wien, Austria\nUser Account\nAccount number: 4\nAccount balance: 1087\n",
+                ]
 current_user = None
-current_bank_account_number = 0
+current_bank_account_number = 4
 user_input = 7
 
 def main():
@@ -66,7 +70,7 @@ class User():
         self.account = account
         
     def __str__(self):
-        return f"Name: {self.fname} {self.lname} \nAddress: {self.address} \nUser account {self.account}"
+        return f"Name: {self.fname} {self.lname} \nAddress: {self.address} \nUser Account {self.account}"
 
 
 class Account():
