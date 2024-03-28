@@ -1,5 +1,5 @@
 # SIMPLE BANK
-#### Video Demo: <URL HERE>
+#### Video Demo: (https://youtu.be/bpfT9S7JanM)
 #### Description:
 Simple bank is, as the name already tells you, a simple bank application, which allows you to make some simple bank transactions or offers you different financial info.
 When you open the application, it greets you and offers you different options. If you don't have an account yet, you can create a new user or you can select a user from the users that are already in the bank. You can view them by selecting one of the numbers that the application provides you. Each user has its own account. By selecting the right number, the selected user can deposit the money or withdraw the money from his account. If he is interested in binding the money for a specific time he can get some info about the interest he would get after the end of the saving time. The user can also get some information about the loan, more specific: how much money he would need to pay the bank each month for the repayment of the total loan.
